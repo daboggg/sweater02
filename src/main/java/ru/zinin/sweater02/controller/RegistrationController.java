@@ -1,0 +1,77 @@
+package ru.zinin.sweater02.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import ru.zinin.sweater02.domain.Role;
+import ru.zinin.sweater02.domain.User;
+import ru.zinin.sweater02.repos.UserRepo;
+
+import java.util.Collections;
+import java.util.Map;
+
+@Controller
+public class RegistrationController {
+
+    @Autowired
+    private UserRepo userRepo;
+
+    @GetMapping("/registration")
+    public String registration() {
+        System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+        return "registration";
+    }
+
+    @PostMapping("/registration")
+    public String addUser(User user, Map<String,Object> model) {
+        User userFromDB = userRepo.findByUsername(user.getUsername());
+
+        if (userFromDB != null) {
+            model.put("message", "User exist");
+            return "registration";
+        }
+
+        user.setActive(true);
+        user.setRoles(Collections.singleton(Role.ROLE));
+        userRepo.save(user);
+
+        return "redirect:/login";
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
