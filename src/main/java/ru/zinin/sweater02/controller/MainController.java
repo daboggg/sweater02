@@ -1,11 +1,13 @@
 package ru.zinin.sweater02.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.zinin.sweater02.domain.Message;
+import ru.zinin.sweater02.domain.User;
 import ru.zinin.sweater02.repos.MessageRepo;
 
 import java.util.Map;
@@ -32,11 +34,12 @@ public class MainController {
 
     @PostMapping("/main")
     public String add(
+            @AuthenticationPrincipal User user,
             @RequestParam String text,
             @RequestParam String tag,
             Map<String, Object> model
     ) {
-        Message message = new Message(text, tag);
+        Message message = new Message(text, tag, user);
 
         messageRepo.save(message);
         Iterable<Message> messages = messageRepo.findAll();

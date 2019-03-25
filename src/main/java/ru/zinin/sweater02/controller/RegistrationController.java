@@ -19,7 +19,6 @@ public class RegistrationController {
 
     @GetMapping("/registration")
     public String registration() {
-        System.out.println("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
         return "registration";
     }
 
