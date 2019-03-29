@@ -1,5 +1,6 @@
 package ru.zinin.sweater02.controller;
 
+import freemarker.ext.servlet.HttpSessionHashModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,6 +26,8 @@ import java.util.UUID;
 
 @Controller
 public class MainController {
+
+
 
     @Autowired
     private MessageRepo messageRepo;
@@ -107,6 +110,11 @@ public class MainController {
             @RequestParam(required = false) Message message
     ){
         Set<Message> messages = user.getMessages();
+
+        model.addAttribute("userChannel", user);
+        model.addAttribute("subscriptionsCount", user.getSubscriptions().size());
+        model.addAttribute("subscribersCount", user.getSubscribers().size());
+        model.addAttribute("isSubscriber", user.getSubscribers().contains(currentUser));
         model.addAttribute("messages", messages);
         model.addAttribute("message", message);
         model.addAttribute("isCurrentUser", currentUser.equals(user));
@@ -134,7 +142,7 @@ public class MainController {
             messageRepo.save(message);
         }
 
-        return "redirect:/user-messages/" + user;
+        return "redirect:/user-messages/" + user.getId();
     }
 
 }
