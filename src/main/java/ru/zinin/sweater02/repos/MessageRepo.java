@@ -1,10 +1,14 @@
 package ru.zinin.sweater02.repos;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import ru.zinin.sweater02.domain.Message;
-
-import java.util.List;
+import ru.zinin.sweater02.domain.User;
 
 public interface MessageRepo extends CrudRepository<Message, Long> {
-    List<Message> findByTag(String tag);
+    Page<Message> findAll(Pageable pageable);
+    Page<Message> findByTag(String tag, Pageable pageable);
+
+    Page<Message> findByAuthor(User user, Pageable pageable);
 }
